@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Research Paper Recommender</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <div class="brand-icon">📚</div>
+        Scholar<span class="brand-accent">AI</span>
+      </a>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item">
+          <a class="nav-link nav-bookmarks-link" href="/bookmarks.html">
+            <i class="fa-solid fa-bookmark"></i> Saved
+            <span id="bookmark-badge" class="bookmark-badge" style="display:none">0</span>
+          </a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="https://api.semanticscholar.org/" target="_blank">API Docs</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== LOADING OVERLAY ===== -->
+  <div id="loading-overlay">
+    <div class="spinner-ring"></div>
+    <div class="loading-text">Searching Papers</div>
+    <div class="loading-step" id="loading-step">Querying arXiv API...</div>
+  </div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-7">
+
+          <div class="hero-badge">
+            <i class="fa-solid fa-sparkles" style="font-size:0.75rem"></i>
+            Powered by arXiv + Smart Ranking
+          </div>
+
+          <h1 class="hero-title">
+            Discover the <span class="accent">most relevant</span><br />
+            research papers — instantly
+          </h1>
+
+          <p class="hero-subtitle">
+            Enter any research topic and let AI search, rank, and surface the
+            top papers from millions of scholarly articles.
+          </p>
+
+          <!-- Search Bar -->
+          <div class="search-wrapper">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="e.g. fake news detection using deep learning"
+              autocomplete="off"
+              maxlength="200"
+            />
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          </div>
+          <button id="search-btn" onclick="handleSearch()">
+            <i class="fa-solid fa-arrow-right"></i>
+            Find Papers
+          </button>
+
+          <!-- Suggested Tags -->
+          <div class="search-tags">
+            <span class="tags-label">Try:</span>
+            <span class="tag-pill" onclick="setQuery('Large Language Models')">Large Language Models</span>
+            <span class="tag-pill" onclick="setQuery('IoT Security')">IoT Security</span>
+            <span class="tag-pill" onclick="setQuery('Computer Vision')">Computer Vision</span>
+            <span class="tag-pill" onclick="setQuery('Federated Learning')">Federated Learning</span>
+            <span class="tag-pill" onclick="setQuery('Cybersecurity')">Cybersecurity</span>
+            <span class="tag-pill" onclick="setQuery('Quantum Computing')">Quantum Computing</span>
+          </div>
+
+          <!-- Search History -->
+          <div class="search-tags" id="search-history" style="display:none; margin-top:0.6rem;"></div>
+
+          <!-- Stats -->
+          <div class="stats-bar">
+            <div class="stat-item">
+              <div class="stat-number">200M+</div>
+              <div class="stat-label">Papers Indexed</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">Top 5</div>
+              <div class="stat-label">AI-Ranked Results</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">&lt;10s</div>
+              <div class="stat-label">Avg Search Time</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Visual Decoration -->
+        <div class="col-lg-5 hero-illustration">
+          <div class="paper-stack">
+            <div class="paper-card-visual">
+              <div class="visual-line"></div><div class="visual-line medium"></div>
+              <div class="visual-line long"></div><div class="visual-line short"></div>
+            </div>
+            <div class="paper-card-visual">
+              <div class="visual-line"></div><div class="visual-line long"></div>
+              <div class="visual-line medium"></div><div class="visual-line short"></div>
+            </div>
+            <div class="paper-card-visual">
+              <div class="visual-line"></div><div class="visual-line short"></div>
+              <div class="visual-line long"></div><div class="visual-line medium"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES SECTION ===== -->
+  <section class="features-section">
+    <div class="container">
+      <div class="row g-0">
+        <div class="col-md-3">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-database"></i></div>
+            <div class="feature-title">arXiv + Scholar</div>
+            <div class="feature-desc">Access papers from IEEE, arXiv, ACM, Springer, and more.</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-bookmark"></i></div>
+            <div class="feature-title">Save & Annotate</div>
+            <div class="feature-desc">Bookmark papers and add personal notes — persists across sessions.</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-table-columns"></i></div>
+            <div class="feature-title">Compare Papers</div>
+            <div class="feature-desc">Side-by-side comparison of 2–3 papers to choose the best fit.</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div class="feature-title">Filter & Export</div>
+            <div class="feature-desc">Filter by year, sort results, and export as BibTeX or CSV.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <p>
+        ScholarAI — AI Research Paper Recommender &nbsp;·&nbsp;
+        Data from <a href="https://arxiv.org/" target="_blank">arXiv</a> &nbsp;·&nbsp;
+        <a href="/bookmarks.html">Saved Papers</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

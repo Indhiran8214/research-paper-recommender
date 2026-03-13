@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Results — AI Research Paper Recommender</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <div class="brand-icon">📚</div>
+        Scholar<span class="brand-accent">AI</span>
+      </a>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/">← New Search</a></li>
+        <li class="nav-item">
+          <a class="nav-link nav-bookmarks-link" href="/bookmarks.html">
+            <i class="fa-solid fa-bookmark"></i> Saved
+            <span id="bookmark-badge" class="bookmark-badge" style="display:none">0</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== LOADING OVERLAY ===== -->
+  <div id="loading-overlay">
+    <div class="spinner-ring"></div>
+    <div class="loading-text">Searching Papers</div>
+    <div class="loading-step" id="loading-step">Querying arXiv API...</div>
+  </div>
+
+  <!-- ===== RESULTS HEADER ===== -->
+  <div class="results-header">
+    <div class="container">
+      <h1 id="results-heading">
+        Results for: <span class="query-text" id="query-display"></span>
+      </h1>
+      <div class="results-meta" id="results-meta">Loading...</div>
+      <div class="results-search-bar">
+        <input type="text" id="results-search-input" placeholder="Search again..." maxlength="200" autocomplete="off" />
+        <button onclick="handleResultsSearch()">
+          <i class="fa-solid fa-arrow-right"></i> Search
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RESULTS AREA ===== -->
+  <div class="results-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2" id="results-container">
+          <div class="state-card">
+            <div class="state-icon">🔍</div>
+            <div class="state-title">Searching...</div>
+            <div class="state-text">Fetching and ranking papers for your query.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NOTES MODAL ===== -->
+  <div class="modal-overlay" id="notes-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-regular fa-note-sticky"></i> Research Notes</h3>
+        <button class="modal-close" onclick="closeNotesModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-subtitle" id="notes-modal-title"></div>
+      <textarea id="notes-textarea" placeholder="Write your research notes here... (saved automatically to this paper)"></textarea>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" onclick="closeNotesModal()">Cancel</button>
+        <button class="btn-modal-save" id="notes-save-btn">
+          <i class="fa-solid fa-floppy-disk"></i> Save Note
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== COMPARE MODAL ===== -->
+  <div class="modal-overlay" id="compare-modal">
+    <div class="modal-box modal-box-wide">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-table-columns"></i> Side-by-Side Comparison</h3>
+        <button class="modal-close" onclick="closeCompareModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="compare-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <p>
+        ScholarAI — AI Research Paper Recommender &nbsp;·&nbsp;
+        Data from <a href="https://arxiv.org/" target="_blank">arXiv</a> &nbsp;·&nbsp;
+        <a href="/bookmarks.html">Saved Papers</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
