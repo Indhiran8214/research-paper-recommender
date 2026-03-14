@@ -5,7 +5,7 @@
 const axios = require("axios");
 const xml2js = require("xml2js");
 
-const ARXIV_API = "http://export.arxiv.org/api/query";
+const ARXIV_API = "https://export.arxiv.org/api/query";
 
 async function fetchPapers(query, limit = 5) {
   try {
